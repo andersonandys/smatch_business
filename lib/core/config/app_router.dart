@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:smatch_managment/app/features/dashboard/views/screens/dashboard_screen.dart';
 import 'package:smatch_managment/features/home/home.dart';
 import 'package:smatch_managment/features/login/login_screen.dart';
+import 'package:smatch_managment/features/register/register_page.dart';
 import 'package:smatch_managment/features/user_profile/user_profile.dart';
 
 class AppRouter {
@@ -38,6 +39,14 @@ class AppRouter {
               },
               routes: const <GoRoute>[],
             ),
+            GoRoute(
+              path: "register",
+              name: "register",
+              builder: (BuildContext context, GoRouterState state) {
+                return const RegisterPage();
+              },
+              routes: const <GoRoute>[],
+            ),
           ],
         ),
       ],
@@ -45,6 +54,7 @@ class AppRouter {
         final bool loggedIn = FirebaseAuth.instance.currentUser != null;
         print(loggedIn);
         final bool loggingIn = state.subloc == '/login';
+        final bool register = state.subloc == '/register';
 
         // if (!loggedIn ) {
         //   return loggingIn? null:'/login';
@@ -54,10 +64,13 @@ class AppRouter {
         // }
 
         if (!loggedIn ) {
+          if (register) {
+            return '/register';
+          }
           return '/login';
         }
         if (loggedIn) {
-          if (loggingIn) {
+          if (loggingIn||register) {
             return "/";
           }
           return state.subloc;

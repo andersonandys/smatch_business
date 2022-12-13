@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smatch_managment/core/widgets/text_form_field_component.dart';
@@ -6,16 +7,15 @@ import 'package:smatch_managment/features/login/app_colors.dart';
 import 'package:smatch_managment/features/login/app_icons.dart';
 import 'package:smatch_managment/features/login/app_styles.dart';
 import 'package:smatch_managment/features/login/responsive_widget.dart';
-import 'package:flutter/foundation.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterViewState extends State<RegisterView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? email;
@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     if (kDebugMode) {
-      email = 'test@gmil.com';
+      email = 'test@gmail123.com';
       password = "123456";
     }
     super.initState();
@@ -153,20 +153,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: InkWell(
                               onTap: () {
                                 if (kDebugMode) {
+                                  _formKey.currentState!.save();
                                   FirebaseAuth.instance
-                                      .signInWithEmailAndPassword(
+                                      .createUserWithEmailAndPassword(
                                           email: email!, password: password!)
                                       .then((value) {
-                                    context.go('/');
+                                   print( value.user!.uid);
                                   });
                                 } else {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
                                     FirebaseAuth.instance
-                                        .signInWithEmailAndPassword(
+                                        .createUserWithEmailAndPassword(
                                             email: email!, password: password!)
                                         .then((value) {
-                                      // context.go('/');
+                                      value.user!.uid;
                                     });
                                   }
                                 }
@@ -181,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'Se connecter',
+                                    "S'inscrire",
                                     style: ralewayStyle.copyWith(
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.whiteColor,
@@ -193,20 +194,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           SizedBox(height: height * 0.03),
-                          Align(
-                            alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Mot de passe oublié?",
-                                style: ralewayStyle.copyWith(
-                                  fontSize: 12.0,
-                                  color: AppColors.mainBlueColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Align(
+                          //   alignment: Alignment.center,
+                          //   child: TextButton(
+                          //     onPressed: () {},
+                          //     child: Text(
+                          //       "Mot de passe oublié?",
+                          //       style: ralewayStyle.copyWith(
+                          //         fontSize: 12.0,
+                          //         color: AppColors.mainBlueColor,
+                          //         fontWeight: FontWeight.w600,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           const Divider(),
                           SizedBox(height: height * 0.03),
                           Material(
@@ -225,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "S'inscrire",
+                                    "Se connecter",
                                     style: ralewayStyle.copyWith(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.green,

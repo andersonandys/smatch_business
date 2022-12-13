@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Smatch Business',
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.basic,
+        // theme: AppTheme.basic,
         routerConfig: AppRouter.router,
       ),
     );
