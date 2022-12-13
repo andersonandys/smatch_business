@@ -22,7 +22,7 @@ import 'package:smatch_managment/app/utils/helpers/app_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:smatch_managment/login/login_screen.dart';
+import 'package:smatch_managment/features/login/login_screen.dart';
 
 // binding
 part '../../bindings/dashboard_binding.dart';

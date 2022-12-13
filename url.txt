@@ -1,0 +1,5 @@
+https://stackoverflow.com/questions/67567860/seturlstrategy-page-reload-not-working-flutter-web-2-0
+
+https://www.didierboelens.com/2020/02/flutter-web-404-direct-url-no-hash/
+
+https://stackoverflow.com/questions/72655867/cannot-set-url-strategy-more-than-once-error-using-go-router-with-flutter-web
