@@ -19,7 +19,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  usePathUrlStrategy();
+  // usePathUrlStrategy();
 
   runApp(MyApp());
 }

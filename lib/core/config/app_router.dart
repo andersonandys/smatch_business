@@ -5,7 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smatch_managment/app/features/dashboard/views/screens/dashboard_screen.dart';
-import 'package:smatch_managment/features/home/home.dart';
+import 'package:smatch_managment/features/home/home_page.dart';
+import 'package:smatch_managment/features/home/home_view.dart';
 import 'package:smatch_managment/features/login/login_screen.dart';
 import 'package:smatch_managment/features/register/register_page.dart';
 import 'package:smatch_managment/features/user_profile/user_profile.dart';
@@ -13,14 +14,14 @@ import 'package:smatch_managment/features/user_profile/user_profile.dart';
 class AppRouter {
   static final GoRouter router = GoRouter(
       debugLogDiagnostics: true,
-      
+
       // initialLocation: "/",
       routes: <GoRoute>[
         GoRoute(
           path: "/",
           name: "home",
           builder: (BuildContext context, GoRouterState state) {
-            return const Home();
+            return const HomePage();
           },
           routes: <GoRoute>[
             GoRoute(
@@ -63,14 +64,14 @@ class AppRouter {
         //    return "/";
         // }
 
-        if (!loggedIn ) {
+        if (!loggedIn) {
           if (register) {
             return '/register';
           }
           return '/login';
         }
         if (loggedIn) {
-          if (loggingIn||register) {
+          if (loggingIn || register) {
             return "/";
           }
           return state.subloc;

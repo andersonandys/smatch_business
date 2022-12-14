@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:smatch_managment/app/constans/app_constants.dart';
+import 'package:smatch_managment/features/login/app_colors.dart';
 
 class UpgradePremiumCard extends StatelessWidget {
   const UpgradePremiumCard({
@@ -78,7 +79,10 @@ class _Info extends StatelessWidget {
   Widget _subtitle() {
     return Text(
       "in order to get full access",
-      style: Theme.of(Get.context!).textTheme.caption,
+      style: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w200,
+      )
     );
   }
 

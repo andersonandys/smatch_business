@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smatch_managment/app/constans/app_constants.dart';
-import 'package:get/get.dart';
 
 class SelectionButtonData {
   final IconData activeIcon;
@@ -92,14 +91,13 @@ class _Button extends StatelessWidget {
           padding: const EdgeInsets.all(kSpacing),
           child: Row(
             children: [
-              _icon((!selected) ? data.icon : data.activeIcon),
+              Icon(data.icon, size: 20),
               const SizedBox(width: kSpacing / 2),
               Expanded(child: _labelText(data.label)),
-              if (data.totalNotif != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: kSpacing / 2),
-                  child: _notif(data.totalNotif!),
-                )
+              Padding(
+                padding: const EdgeInsets.only(left: kSpacing / 2),
+                child: _notif(12),
+              )
             ],
           ),
         ),
@@ -111,9 +109,7 @@ class _Button extends StatelessWidget {
     return Icon(
       iconData,
       size: 20,
-      color: (!selected)
-          ? kFontColorPallets[1]
-          : Theme.of(Get.context!).primaryColor,
+      color: kFontColorPallets[1],
     );
   }
 
@@ -121,9 +117,7 @@ class _Button extends StatelessWidget {
     return Text(
       data,
       style: TextStyle(
-        color: (!selected)
-            ? kFontColorPallets[1]
-            : Theme.of(Get.context!).primaryColor,
+        color: kFontColorPallets[1],
         fontWeight: FontWeight.w600,
         letterSpacing: .8,
         fontSize: 13,
