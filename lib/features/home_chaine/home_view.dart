@@ -9,8 +9,8 @@ import 'package:smatch_managment/app/constans/app_constants.dart';
 import 'package:smatch_managment/app/shared_components/get_premium_card.dart';
 import 'package:smatch_managment/core/utils/responsive_builder.dart';
 import 'package:smatch_managment/features/add_video.dart';
-import 'package:smatch_managment/features/home/home_provider.dart';
-import 'package:smatch_managment/features/home/widgets/drawer_content.dart';
+import 'package:smatch_managment/features/home_chaine/home_provider.dart';
+import 'package:smatch_managment/features/home_chaine/widgets/drawer_content.dart';
 import 'package:smatch_managment/features/uplaod_file/uplaod_file.dart';
 
 class HomeView extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
-            flex: 4,
+            flex: (MediaQuery.of(context).size.width < 1360) ? 4 : 3,
             child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(kBorderRadius),

@@ -193,20 +193,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           SizedBox(height: height * 0.03),
-                          Align(
-                            alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "Mot de passe oublié?",
-                                style: ralewayStyle.copyWith(
-                                  fontSize: 12.0,
-                                  color: AppColors.mainBlueColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Align(
+                          //   alignment: Alignment.center,
+                          //   child: TextButton(
+                          //     onPressed: () {},
+                          //     child: Text(
+                          //       "Mot de passe oublié?",
+                          //       style: ralewayStyle.copyWith(
+                          //         fontSize: 12.0,
+                          //         color: AppColors.mainBlueColor,
+                          //         fontWeight: FontWeight.w600,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           const Divider(),
                           SizedBox(height: height * 0.03),
                           Material(

@@ -44,7 +44,7 @@ dependencies:
   percent_indicator: ^3.4.0
   flutter_staggered_grid_view: ^0.4.1
   google_fonts: ^3.0.1
-  flutter_svg: ^1.1.1+1
+  # flutter_svg: ^1.1.1+1
 
   # https://pub.dev/packages/go_router
   go_router: ^5.2.4
@@ -56,8 +56,13 @@ dependencies:
   firebase_auth: ^4.2.0
   firebase_storage: ^11.0.7
 
+  # https://pub.dev/packages/flutter_svg
+  flutter_svg: ^1.1.6
 
-  file_picker: ^4.6.1
+  # https://pub.dev/packages/file_picker
+  file_picker: ^5.2.4
+
+  # https://pub.dev/packages/liquid_progress_indicator
   liquid_progress_indicator: ^0.4.0
 
   # https://pub.dev/packages/desktop_drop
@@ -65,6 +70,7 @@ dependencies:
 
   # https://pub.dev/packages/dotted_border
   dotted_border: ^2.0.0+3
+  cloud_firestore: ^4.2.0
 
 
 dev_dependencies:
@@ -94,6 +100,7 @@ flutter:
     - assets/images/raster/.
     - assets/images/vector/.
     - assets/images/
+    - assets/svg/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

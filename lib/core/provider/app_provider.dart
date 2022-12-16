@@ -1,1 +1,3 @@
-class AppProvider{}
+class AppProvider{
+  
+}

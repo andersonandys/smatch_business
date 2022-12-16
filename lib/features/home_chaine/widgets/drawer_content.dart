@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:smatch_managment/app/constans/app_constants.dart';
 import 'package:smatch_managment/app/shared_components/selection_button.dart';
 import 'package:smatch_managment/app/shared_components/upgrade_premium_card.dart';
-import 'package:smatch_managment/features/home/home_provider.dart';
+import 'package:smatch_managment/features/home_chaine/home_provider.dart';
 import 'package:smatch_managment/features/login/app_colors.dart';
 
 class DrawerContent extends StatefulWidget {

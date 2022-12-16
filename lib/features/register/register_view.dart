@@ -214,7 +214,7 @@ class _RegisterViewState extends State<RegisterView> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                context.go('/register');
+                                context.go('/login');
                               },
                               borderRadius: BorderRadius.circular(5.0),
                               child: Ink(
