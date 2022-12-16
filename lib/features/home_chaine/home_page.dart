@@ -8,9 +8,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return Provider(
       create: (_) => HomeProvider(),
-      lazy: false,
+      // lazy: false,
       child: const HomeView(),
     );
   }

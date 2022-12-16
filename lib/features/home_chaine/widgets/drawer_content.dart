@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -51,6 +52,11 @@ class _DrawerContentState extends State<DrawerContent> {
                 const Text("projectName"),
                 const SizedBox(height: 5),
                 const Text("User Name"),
+                TextButton(
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                    },
+                    child: Text("Déconnexion")),
               ],
             ),
           ),

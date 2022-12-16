@@ -31,16 +31,19 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
   late String name;
   late String firstName;
   late String lastName;
+  late String email;
+  late String password;
   late String canalName;
+  String? urlImage;
+  String? fileName;
   bool free = true;
+  bool loading = false;
   final String type = "independent";
   String? conpagnyName;
   String? desc;
   String? urlPicture;
   Uint8List? webImage;
 
-  String? email;
-  String? password;
   bool _obscureText = true;
 
   @override
@@ -130,6 +133,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                     ? const Icon(
                                         Icons.person,
                                         size: 50,
+                                        color: Colors.grey,
                                       )
                                     : null,
                               ),
@@ -144,7 +148,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
 
                                   if (result != null) {
                                     Uint8List? file = result.files.first.bytes;
-                                    String fileName = result.files.first.name;
+                                    fileName = result.files.first.name;
                                     setState(() {
                                       webImage = file!;
                                     });
@@ -241,7 +245,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                 width: 150,
                                 child: ComponentTextFormField(
                                   onSaved: (newValue) {
-                                    email = newValue;
+                                    email = newValue!;
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -256,7 +260,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                               Expanded(
                                 child: ComponentTextFormField(
                                   onSaved: (newValue) {
-                                    password = newValue;
+                                    password = newValue!;
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -291,38 +295,30 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                               onTap: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  await FirebaseAuth.instance
-                                      .createUserWithEmailAndPassword(
-                                          email: email!, password: password!)
-                                      .then((value) async {
-                                    print("user registed");
-                                    id = value.user!.uid;
-                                    await FirebaseStorage.instance
-                                        .ref()
-                                        .child("files/$id")
-                                        .putData(webImage!)
-                                        .then((p0) {
-                                      p0.ref.getDownloadURL().then((value) {
-                                        print("image saved");
-                                        ChaineModel chaineModel = ChaineModel(
-                                          id: id,
-                                          firstName: firstName,
-                                          lastName: lastName,
-                                          canalName: canalName,
-                                          free: free,
-                                          accountType: type,
-                                          urlPicture: value,
-                                        );
-                                        FirebaseFirestore.instance
-                                            .collection(AppConstants.collectionChaine)
-                                            .doc(id)
-                                            .set(chaineModel.toJson())
-                                            .then((value) {
-                                          print("save user");
-                                          context.go("/");
-                                        });
-                                      });
+                                  setState(() {
+                                    loading = true;
+                                  });
+
+                                  await registerIndependentProvider
+                                      .register(
+                                    email: email,
+                                    password: password,
+                                    chaineModel: ChaineModel(
+                                      firstName: firstName,
+                                      lastName: lastName,
+                                      email: email,
+                                      canalName: canalName,
+                                      free: free,
+                                      accountType: type,
+                                      urlPicture: urlImage,
+                                    ),
+                                  )
+                                      .then((value) {
+                                    setState(() {
+                                      loading = false;
                                     });
+
+                                    context.replace("/");
                                   });
                                 }
                               },

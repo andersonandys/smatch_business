@@ -30,16 +30,19 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
   late String name;
   late String firstName;
   late String lastName;
+  late String email;
+  late String password;
   late String canalName;
+  String? urlImage;
+  String? fileName;
   bool free = true;
+  bool loading = false;
   final String type = "filiation";
-  String? conpagnyName;
+  late String conpagnyName;
   String? desc;
   String? urlPicture;
   Uint8List? webImage;
 
-  String? email;
-  String? password;
   bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
@@ -128,6 +131,7 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                                     ? const Icon(
                                         Icons.person,
                                         size: 50,
+                                        color: Colors.grey,
                                       )
                                     : null,
                               ),
@@ -142,7 +146,7 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
 
                                   if (result != null) {
                                     Uint8List? file = result.files.first.bytes;
-                                    String fileName = result.files.first.name;
+                                    fileName = result.files.first.name;
                                     setState(() {
                                       webImage = file!;
                                     });
@@ -234,69 +238,49 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                           ),
                           const SizedBox(height: 20),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              // Expanded(
-                              //   child: ComponentTextFormField(
-                              //     onSaved: (newValue) {
-                              //       canalName = newValue!;
-                              //     },
-                              //     validator: (value) {
-                              //       if (value!.isEmpty) {
-                              //         return "Champ ne peut pas être vide";
-                              //       }
-                              //       return null;
-                              //     },
-                              //     hintText: "Nom de ma chaîne",
-                              //   ),
-                              // ),
-                              // const SizedBox(width: 20),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Filale de :",
-                                    textAlign: TextAlign.center,
-                                    style: ralewayStyle.copyWith(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                    ),
+                              Text(
+                                "Filale de :",
+                                textAlign: TextAlign.center,
+                                style: ralewayStyle.copyWith(
+                                  fontSize: 15.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              SizedBox(
+                                width: 220,
+                                child: DropdownButtonFormField(
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return "Champ ne peut pas être vide";
+                                    }
+                                    return null;
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
                                   ),
-                                  const SizedBox(width: 20),
-                                  SizedBox(
-                                    width: 220,
-                                    child: DropdownButtonFormField(
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return "Champ ne peut pas être vide";
-                                        }
-                                        return null;
-                                      },
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                      ),
-                                      hint: const Text(
-                                          "Selectionnez une filiale"),
-                                      items: const [
-                                        DropdownMenuItem(
-                                          value: "Brice",
-                                          child: Text("Filière 1"),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: "Brice",
-                                          child: Text("Filière 2"),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: "Filière 3",
-                                          child: Text("Filière 3"),
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        setState(() {});
-                                      },
+                                  hint: const Text("Selectionnez une filiale"),
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: "Structure 1",
+                                      child: Text("Structure 1"),
                                     ),
-                                  ),
-                                ],
+                                    DropdownMenuItem(
+                                      value: "Structure 2",
+                                      child: Text("Structure 2"),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "Structure 3",
+                                      child: Text("Structure 3"),
+                                    ),
+                                  ],
+                                  onSaved: (newValue) {
+                                    conpagnyName = newValue!;
+                                  },
+                                  onChanged: (value) {},
+                                ),
                               ),
                             ],
                           ),
@@ -304,10 +288,10 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                           Row(
                             children: [
                               SizedBox(
-                                width: 150,
+                                width: 250,
                                 child: ComponentTextFormField(
                                   onSaved: (newValue) {
-                                    email = newValue;
+                                    email = newValue!;
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -322,7 +306,7 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                               Expanded(
                                 child: ComponentTextFormField(
                                   onSaved: (newValue) {
-                                    password = newValue;
+                                    password = newValue!;
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -357,39 +341,29 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                               onTap: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  await FirebaseAuth.instance
-                                      .createUserWithEmailAndPassword(
-                                          email: email!, password: password!)
-                                      .then((value) async {
-                                    print("user registed");
-                                    id = value.user!.uid;
-                                    await FirebaseStorage.instance
-                                        .ref()
-                                        .child("files/$id")
-                                        .putData(webImage!)
-                                        .then((p0) {
-                                      p0.ref.getDownloadURL().then((value) {
-                                        print("image saved");
-                                        ChaineModel chaineModel = ChaineModel(
-                                          id: id,
-                                          firstName: firstName,
-                                          lastName: lastName,
-                                          canalName: canalName,
-                                          free: free,
-                                          accountType: type,
-                                          urlPicture: value,
-                                        );
-                                        FirebaseFirestore.instance
-                                            .collection(
-                                                AppConstants.collectionChaine)
-                                            .doc(id)
-                                            .set(chaineModel.toJson())
-                                            .then((value) {
-                                          print("save user");
-                                          context.go("/");
-                                        });
-                                      });
+                                  setState(() {
+                                    loading = true;
+                                  });
+
+                                  await registerFiliationProvider
+                                      .register(
+                                          email: email,
+                                          password: password,
+                                          chaineModel: ChaineModel(
+                                            firstName: firstName,
+                                            lastName: lastName,
+                                            email: email,
+                                            canalName: canalName,
+                                            free: free,
+                                            accountType: type,
+                                            urlPicture: urlImage,
+                                            compagnyFilialeName: conpagnyName,
+                                          ))
+                                      .then((value) {
+                                    setState(() {
+                                      loading = false;
                                     });
+                                    context.replace("/");
                                   });
                                 }
                               },
@@ -402,14 +376,18 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                                   color: AppColors.mainBlueColor,
                                 ),
                                 child: Center(
-                                  child: Text(
-                                    "S'inscrire",
-                                    style: ralewayStyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.whiteColor,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
+                                  child: loading
+                                      ? const CircularProgressIndicator(
+                                          color: AppColors.whiteColor,
+                                        )
+                                      : Text(
+                                          "S'inscrire",
+                                          style: ralewayStyle.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.whiteColor,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),

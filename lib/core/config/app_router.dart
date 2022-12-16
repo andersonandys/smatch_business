@@ -93,7 +93,7 @@ class AppRouter {
           return '/login';
         }
         if (loggedIn) {
-          if (loggingIn || register) {
+          if (loggingIn) {
             return "/";
           }
           return state.subloc;

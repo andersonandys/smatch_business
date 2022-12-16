@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class HomeProvider extends ChangeNotifier {
+class HomeProvider {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int indexPage = 0;
 
   void updateIndexPage(int index) {
     indexPage = index;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void openDrawer() {

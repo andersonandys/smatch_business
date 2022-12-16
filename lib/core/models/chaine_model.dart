@@ -1,19 +1,21 @@
 class ChaineModel {
-  final String id;
+  String? id;
   final String firstName;
   final String lastName;
+  final String email;
   final String canalName;
   final bool free;
   final String accountType;
   final String? compagnyFilialeId;
   final String? compagnyFilialeName;
   final String? desc;
-  final String? urlPicture;
+  String? urlPicture;
 
   ChaineModel({
-    required this.id,
+    this.id,
     required this.firstName,
     required this.lastName,
+    required this.email,
     required this.canalName,
     required this.free,
     required this.accountType,
@@ -22,7 +24,6 @@ class ChaineModel {
     this.desc,
     this.urlPicture,
   });
-
 
   factory ChaineModel.fromJson(Map<String, dynamic> json) {
     return ChaineModel(
@@ -36,6 +37,7 @@ class ChaineModel {
       compagnyFilialeName: json['compagnyFilialeName'],
       desc: json['desc'],
       urlPicture: json['urlPicture'],
+      email: json['email'],
     );
   }
 
@@ -44,6 +46,7 @@ class ChaineModel {
       'id': id,
       'firstName': firstName,
       'lastName': lastName,
+      'email': email,
       'canalName': canalName,
       'free': free,
       'accountType': accountType,
