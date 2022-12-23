@@ -9,6 +9,7 @@ import 'package:smatch_managment/app/constans/app_constants.dart';
 import 'package:smatch_managment/app/shared_components/get_premium_card.dart';
 import 'package:smatch_managment/core/utils/responsive_builder.dart';
 import 'package:smatch_managment/features/add_video.dart';
+import 'package:smatch_managment/features/dashboard_chaine/pages/dashboard_chaine_page.dart';
 import 'package:smatch_managment/features/home_chaine/home_provider.dart';
 import 'package:smatch_managment/features/home_chaine/widgets/drawer_content.dart';
 import 'package:smatch_managment/features/uplaod_file/uplaod_file.dart';
@@ -35,7 +36,7 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       key: homeProvider.scaffoldKey,
-      backgroundColor: const Color.fromRGBO(31, 29, 44, 1),
+      backgroundColor: Color.fromRGBO(31, 31, 31, 1),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
               onPageChanged: (index) => homeProvider.updateIndexPage(index),
               controller: _pageController,
               children: const [
-                UplaodFile(),
+                DashboardChainePage(),
                 AddVideo(),
                 UplaodFile(),
                 AddVideo(),
