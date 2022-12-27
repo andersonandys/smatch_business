@@ -9,6 +9,7 @@ import 'package:smatch_managment/app/constans/app_constants.dart';
 import 'package:smatch_managment/app/shared_components/get_premium_card.dart';
 import 'package:smatch_managment/core/utils/responsive_builder.dart';
 import 'package:smatch_managment/features/add_video.dart';
+import 'package:smatch_managment/features/all_videos/pages/all_videos_page.dart';
 import 'package:smatch_managment/features/dashboard_chaine/pages/dashboard_chaine_page.dart';
 import 'package:smatch_managment/features/home_chaine/home_provider.dart';
 import 'package:smatch_managment/features/home_chaine/widgets/drawer_content.dart';
@@ -36,21 +37,16 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       key: homeProvider.scaffoldKey,
-      backgroundColor: Color.fromRGBO(31, 31, 31, 1),
+      backgroundColor: const Color.fromRGBO(31, 31, 31, 1),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
             flex: (MediaQuery.of(context).size.width < 1360) ? 4 : 3,
-            child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(kBorderRadius),
-                  bottomRight: Radius.circular(kBorderRadius),
-                ),
-                child: DrawerContent(
-                  homeProvider: homeProvider,
-                  pageController: _pageController,
-                )),
+            child: DrawerContent(
+              homeProvider: homeProvider,
+              pageController: _pageController,
+            ),
           ),
           Expanded(
             flex: 9,
@@ -59,6 +55,7 @@ class _HomeViewState extends State<HomeView> {
               controller: _pageController,
               children: const [
                 DashboardChainePage(),
+                AllVideosPage(),
                 AddVideo(),
                 UplaodFile(),
                 AddVideo(),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:smatch_managment/core/utils/extention.dart';
+import 'package:smatch_managment/core/widgets/dialog_widget.dart';
 
 import '../provider/dashboard_chaine_provider.dart';
 import 'package:provider/provider.dart';
@@ -76,137 +77,49 @@ class _DashboardChaineViewState extends State<DashboardChaineView> {
                                 const Color.fromARGB(255, 23, 33, 136),
                           ),
                           onPressed: () {
-                            showDialog(
+                            DialogWidget.addVideoDialog(
                                 context: context,
-                                builder: ((context) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 250,
-                                      vertical: 50,
-                                    ),
-                                    color: const Color.fromRGBO(40, 40, 40, 1),
-                                    height: 500,
-                                    width: 200,
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Importer des vidéos",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              // IconButton(
-                                              //   onPressed: () {},
-                                              //   icon: const Icon(Icons.close),
-                                              // )
-                                            ],
-                                          ),
-                                        ),
-                                        const Divider(
-                                          color: Colors.white,
-                                          height: 0.2,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Glissez-déposez les fichiers vidéo que vous souhaitez mettre en ligne",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              5.height,
-                                              Text(
-                                                "Vos vidéos resteront privées jusqu'à leur publication.",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                              15.height,
-                                              TextButton(
-                                                style: TextButton.styleFrom(
-                                                  backgroundColor:
-                                                      const Color.fromRGBO(
-                                                          69, 168, 252, 1),
-                                                ),
-                                                onPressed: () async {
-                                                  FilePickerResult? result =
-                                                      await FilePicker.platform
-                                                          .pickFiles(
-                                                    allowMultiple: true,
-                                                    type: FileType.image,
-                                                    // allowedExtensions: [
-                                                    //   'jpg',
-                                                    //   'pdf',
-                                                    //   'doc'
-                                                    // ],
-                                                  );
-
-                                                  if (result != null) {
-                                                    Uint8List? file = result
-                                                        .files.first.bytes;
-                                                    String fileName =
-                                                        result.files.first.name;
-
-                                                    UploadTask task =
-                                                        FirebaseStorage.instance
-                                                            .ref()
-                                                            .child(
-                                                                "files/$fileName")
-                                                            .putData(file!);
-
-                                                    task.snapshotEvents
-                                                        .listen((event) {
-                                                      setState(() {
-                                                        progress = ((event
-                                                                        .bytesTransferred
-                                                                        .toDouble() /
-                                                                    event
-                                                                        .totalBytes
-                                                                        .toDouble()) *
-                                                                100)
-                                                            .roundToDouble();
-
-                                                        if (progress == 100) {
-                                                          event.ref
-                                                              .getDownloadURL()
-                                                              .then((downloadUrl) =>
-                                                                  print(
-                                                                      downloadUrl));
-                                                        }
-
-                                                        print(progress);
-                                                      });
-                                                    });
-                                                  }
-                                                },
-                                                child: const Text(
-                                                  "SELECTIONNER DES FICHIERS",
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                onPressed: () async {
+                                  FilePickerResult? result =
+                                      await FilePicker.platform.pickFiles(
+                                    allowMultiple: true,
+                                    type: FileType.image,
+                                    // allowedExtensions: [
+                                    //   'jpg',
+                                    //   'pdf',
+                                    //   'doc'
+                                    // ],
                                   );
-                                }));
+
+                                  if (result != null) {
+                                    Uint8List? file = result.files.first.bytes;
+                                    String fileName = result.files.first.name;
+
+                                    UploadTask task = FirebaseStorage.instance
+                                        .ref()
+                                        .child("files/$fileName")
+                                        .putData(file!);
+
+                                    task.snapshotEvents.listen((event) {
+                                      setState(() {
+                                        progress = ((event.bytesTransferred
+                                                        .toDouble() /
+                                                    event.totalBytes
+                                                        .toDouble()) *
+                                                100)
+                                            .roundToDouble();
+
+                                        if (progress == 100) {
+                                          event.ref.getDownloadURL().then(
+                                              (downloadUrl) =>
+                                                  print(downloadUrl));
+                                        }
+
+                                        print(progress);
+                                      });
+                                    });
+                                  }
+                                });
                           },
                           child: const Text(
                             "Importer une vidéo",

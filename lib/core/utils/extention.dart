@@ -5,5 +5,3 @@ extension DoubleExtension on int? {
 
   Widget get width => SizedBox(width: this?.toDouble());
 }
-
-class Blabla {}

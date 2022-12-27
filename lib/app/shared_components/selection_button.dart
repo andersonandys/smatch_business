@@ -94,10 +94,7 @@ class _Button extends StatelessWidget {
               Icon(data.icon, size: 20),
               const SizedBox(width: kSpacing / 2),
               Expanded(child: _labelText(data.label)),
-              Padding(
-                padding: const EdgeInsets.only(left: kSpacing / 2),
-                child: _notif(12),
-              )
+            
             ],
           ),
         ),
