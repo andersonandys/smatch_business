@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smatch_managment/core/config/app_contants.dart';
 import 'package:smatch_managment/core/models/chaine_model.dart';
+import 'package:smatch_managment/core/provider/app_provider.dart';
 import 'package:smatch_managment/core/widgets/text_form_field_component.dart';
 import 'package:smatch_managment/features/login/app_colors.dart';
 import 'package:smatch_managment/features/login/app_styles.dart';
@@ -48,6 +49,9 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
   Widget build(BuildContext context) {
     final RegisterFiliationProvider registerFiliationProvider =
         context.read<RegisterFiliationProvider>();
+
+    final AppProvider appProvider = AppProvider();
+
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -345,25 +349,26 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                                     loading = true;
                                   });
 
-                                  await registerFiliationProvider
+                                  await appProvider
                                       .register(
-                                          email: email,
-                                          password: password,
-                                          chaineModel: ChaineModel(
-                                            firstName: firstName,
-                                            lastName: lastName,
-                                            email: email,
-                                            canalName: canalName,
-                                            free: free,
-                                            accountType: type,
-                                            urlPicture: urlImage,
-                                            compagnyFilialeName: conpagnyName,
-                                          ))
+                                    email: email,
+                                    password: password,
+                                    chaineModel: ChaineModel(
+                                      firstName: firstName,
+                                      lastName: lastName,
+                                      email: email,
+                                      canalName: canalName,
+                                      free: free,
+                                      accountType: type,
+                                      urlPicture: urlImage,
+                                      compagnyFilialeName: conpagnyName,
+                                    ),
+                                  )
                                       .then((value) {
                                     setState(() {
                                       loading = false;
                                     });
-                                    context.replace("/");
+                                    // context.replace("/");
                                   });
                                 }
                               },

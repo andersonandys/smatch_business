@@ -7,12 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smatch_managment/app/constans/app_constants.dart';
 import 'package:smatch_managment/app/shared_components/get_premium_card.dart';
+import 'package:smatch_managment/core/provider/app_provider.dart';
 import 'package:smatch_managment/core/utils/responsive_builder.dart';
 import 'package:smatch_managment/features/add_video.dart';
 import 'package:smatch_managment/features/all_videos/pages/all_videos_page.dart';
 import 'package:smatch_managment/features/dashboard_chaine/pages/dashboard_chaine_page.dart';
-import 'package:smatch_managment/features/home_chaine/home_provider.dart';
-import 'package:smatch_managment/features/home_chaine/widgets/drawer_content.dart';
+import 'package:smatch_managment/features/home_business/home_business_provider.dart';
+import 'package:smatch_managment/features/home_business/widgets/drawer_content.dart';
 import 'package:smatch_managment/features/uplaod_file/uplaod_file.dart';
 
 class HomeView extends StatefulWidget {
@@ -34,8 +35,13 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final HomeProvider homeProvider = context.watch<HomeProvider>();
+     final AppProvider appProvider = AppProvider();
 
-    return Scaffold(
+
+    return FutureBuilder(
+      future: appProvider.checkAuth(context,routePath: "home", initData: true),
+      builder: (context, snap){
+        return Scaffold(
       key: homeProvider.scaffoldKey,
       backgroundColor: const Color.fromRGBO(31, 31, 31, 1),
       body: Row(
@@ -72,6 +78,9 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
+    );
+
+      },
     );
   }
 }

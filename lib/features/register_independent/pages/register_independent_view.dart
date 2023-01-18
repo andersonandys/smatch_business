@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smatch_managment/core/config/app_contants.dart';
 import 'package:smatch_managment/core/models/chaine_model.dart';
+import 'package:smatch_managment/core/provider/app_provider.dart';
 import 'package:smatch_managment/core/widgets/text_form_field_component.dart';
 import 'package:smatch_managment/features/login/app_colors.dart';
 import 'package:smatch_managment/features/login/app_styles.dart';
@@ -50,6 +51,8 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
   Widget build(BuildContext context) {
     final RegisterIndependentProvider registerIndependentProvider =
         context.read<RegisterIndependentProvider>();
+    final AppProvider appProvider = AppProvider();
+
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -299,7 +302,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                     loading = true;
                                   });
 
-                                  await registerIndependentProvider
+                                  await appProvider
                                       .register(
                                     email: email,
                                     password: password,

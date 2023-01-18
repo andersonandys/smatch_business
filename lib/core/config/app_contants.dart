@@ -1,3 +1,4 @@
-class AppConstants{
-  static const String collectionChaine = "chaine";
+class AppConstants {
+  static const String collectionChaineFS = "chaine";
+  static const String collectionUsersFS = "users";
 }

@@ -37,6 +37,7 @@ class _UplaodFileState extends State<UplaodFile> {
                       .putData(file!);
 
                   task.snapshotEvents.listen((event) {
+                    
                     setState(() {
                       progress = ((event.bytesTransferred.toDouble() /
                                   event.totalBytes.toDouble()) *
@@ -52,6 +53,7 @@ class _UplaodFileState extends State<UplaodFile> {
                       print(progress);
                     });
                   });
+
                 }
               },
               child: const Text("Upload File to Firebase Storage"),

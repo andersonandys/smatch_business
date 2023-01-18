@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smatch_managment/features/home_chaine/home_view.dart';
-import 'package:smatch_managment/features/home_chaine/home_provider.dart';
+import 'package:smatch_managment/features/home_business/home_business_view.dart';
+import 'package:smatch_managment/features/home_business/home_business_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

@@ -41,7 +41,7 @@ class RegisterIndependentProvider {
           });
         }
         await FirebaseFirestore.instance
-            .collection(AppConstants.collectionChaine)
+            .collection(AppConstants.collectionChaineFS)
             .doc(id)
             .set(chaineModel.toJson())
             .then((value) {

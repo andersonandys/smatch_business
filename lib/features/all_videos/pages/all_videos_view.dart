@@ -1,8 +1,12 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:smatch_managment/core/widgets/dialog_widget.dart';
 import 'package:smatch_managment/features/videos/pages/videos_page.dart';
 
 import '../provider/all_videos_provider.dart';
@@ -16,6 +20,8 @@ class AllVideosView extends StatefulWidget {
 
 class _AllVideosViewState extends State<AllVideosView> {
   final PageController _pageController = PageController();
+
+  double progress = 0.0;
 
   @override
   void dispose() {
@@ -38,12 +44,67 @@ class _AllVideosViewState extends State<AllVideosView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Contenu de la chaîne",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Contenu de la chaîne",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  DialogWidget.addVideoDialog(
+                      context: context,
+                      onPressed: () async {
+                        FilePickerResult? result =
+                            await FilePicker.platform.pickFiles(
+                          allowMultiple: true,
+                          // type: FileType.image,
+                          // allowedExtensions: [
+                          //   'jpg',
+                          //   'pdf',
+                          //   'doc'
+                          // ],
+                        );
+
+                        if (result != null) {
+                          Uint8List? file = result.files.first.bytes;
+                          String fileName = result.files.first.name;
+
+                          UploadTask task = FirebaseStorage.instance
+                              .ref()
+                              .child("files/$fileName")
+                              .putData(file!);
+
+                          task.snapshotEvents.listen((event) {
+                            setState(() {
+                              progress = ((event.bytesTransferred.toDouble() /
+                                          event.totalBytes.toDouble()) *
+                                      100)
+                                  .roundToDouble();
+
+                              if (progress == 100) {
+                                event.ref
+                                    .getDownloadURL()
+                                    .then((downloadUrl) => print(downloadUrl));
+                              }
+
+                              print(progress);
+                            });
+                          });
+                        }
+                      });
+                },
+                icon: Icon(
+                  Icons.video_call,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+            ],
           ),
           SizedBox(
             height: 60,
