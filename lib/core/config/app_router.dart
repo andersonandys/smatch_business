@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smatch_managment/app/features/dashboard/views/screens/dashboard_screen.dart';
+import 'package:smatch_managment/features/business/pages/business_page.dart';
 import 'package:smatch_managment/features/home_business/home_business_page.dart';
 import 'package:smatch_managment/features/home_business/home_business_view.dart';
 import 'package:smatch_managment/features/login/login_screen.dart';
@@ -22,9 +23,9 @@ class AppRouter {
     routes: <GoRoute>[
       GoRoute(
         path: "/",
-        name: "home",
+        name: "mybusiness",
         builder: (BuildContext context, GoRouterState state) {
-          return const HomePage();
+          return const BusinessPage();
         },
         routes: <GoRoute>[
           GoRoute(
@@ -40,6 +41,14 @@ class AppRouter {
             name: "user",
             builder: (BuildContext context, GoRouterState state) {
               return const UserProfile();
+            },
+            routes: const <GoRoute>[],
+          ),
+          GoRoute(
+            path: "home",
+            name: "home",
+            builder: (BuildContext context, GoRouterState state) {
+              return const HomePage();
             },
             routes: const <GoRoute>[],
           ),
@@ -71,36 +80,36 @@ class AppRouter {
         ],
       ),
     ],
-    redirect: (BuildContext context, GoRouterState state) {
-      final bool loggedIn = FirebaseAuth.instance.currentUser != null;
-      print(loggedIn);
-      final bool loggingIn = state.subloc == '/login';
-      final bool register = state.subloc == '/register';
-      final bool filiale = state.subloc == '/register/filiale';
-      final bool independent = state.subloc == '/register/independent';
+    // redirect: (BuildContext context, GoRouterState state) {
+    //   final bool loggedIn = FirebaseAuth.instance.currentUser != null;
+    //   print(loggedIn);
+    //   final bool loggingIn = state.subloc == '/login';
+    //   final bool register = state.subloc == '/register';
+    //   final bool filiale = state.subloc == '/register/filiale';
+    //   final bool independent = state.subloc == '/register/independent';
 
-      // if (!loggedIn ) {
-      //   return loggingIn? null:'/login';
-      // }
-      // if (loggingIn) {
-      //    return "/";
-      // }
+    //   // if (!loggedIn ) {
+    //   //   return loggingIn? null:'/login';
+    //   // }
+    //   // if (loggingIn) {
+    //   //    return "/";
+    //   // }
 
-      if (!loggedIn) {
-        if (register || filiale || independent) {
-          return state.subloc;
-        }
-        return '/login';
-      }
-      if (loggedIn) {
-        if (loggingIn) {
-          return "/";
-        }
-        return state.subloc;
-      }
+    //   if (!loggedIn) {
+    //     if (register || filiale || independent) {
+    //       return state.subloc;
+    //     }
+    //     return '/login';
+    //   }
+    //   if (loggedIn) {
+    //     if (loggingIn) {
+    //       return "/";
+    //     }
+    //     return state.subloc;
+    //   }
 
-      return null;
-    },
+    //   return null;
+    // },
     // refreshListenable:
     //     GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
   );

@@ -35,51 +35,57 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final HomeProvider homeProvider = context.watch<HomeProvider>();
-     final AppProvider appProvider = AppProvider();
-
+    final AppProvider appProvider = AppProvider();
 
     return FutureBuilder(
-      future: appProvider.checkAuth(context,routePath: "home", initData: true),
-      builder: (context, snap){
+      future: appProvider.checkAuth(context),
+      builder: (context, snap) {
+        if(snap.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        
         return Scaffold(
-      key: homeProvider.scaffoldKey,
-      backgroundColor: const Color.fromRGBO(31, 31, 31, 1),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: (MediaQuery.of(context).size.width < 1360) ? 4 : 3,
-            child: DrawerContent(
-              homeProvider: homeProvider,
-              pageController: _pageController,
-            ),
+          key: homeProvider.scaffoldKey,
+          backgroundColor: const Color.fromRGBO(31, 31, 31, 1),
+          body: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: (MediaQuery.of(context).size.width < 1360) ? 4 : 3,
+                child: DrawerContent(
+                  homeProvider: homeProvider,
+                  pageController: _pageController,
+                ),
+              ),
+              Expanded(
+                flex: 9,
+                child: PageView(
+                  onPageChanged: (index) => homeProvider.updateIndexPage(index),
+                  controller: _pageController,
+                  children: const [
+                    DashboardChainePage(),
+                    AllVideosPage(),
+                    AddVideo(),
+                    UplaodFile(),
+                    AddVideo(),
+                    UplaodFile(),
+                    AddVideo(),
+                    UplaodFile(),
+                    AddVideo(),
+                    UplaodFile(),
+                    AddVideo(),
+                    UplaodFile(),
+                    AddVideo(),
+                  ],
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            flex: 9,
-            child: PageView(
-              onPageChanged: (index) => homeProvider.updateIndexPage(index),
-              controller: _pageController,
-              children: const [
-                DashboardChainePage(),
-                AllVideosPage(),
-                AddVideo(),
-                UplaodFile(),
-                AddVideo(),
-                UplaodFile(),
-                AddVideo(),
-                UplaodFile(),
-                AddVideo(),
-                UplaodFile(),
-                AddVideo(),
-                UplaodFile(),
-                AddVideo(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-
+        );
       },
     );
   }

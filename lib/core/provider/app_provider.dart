@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smatch_managment/core/config/app_contants.dart';
+import 'package:smatch_managment/core/models/business_model.dart';
 import 'package:smatch_managment/core/models/chaine_model.dart';
 import 'package:smatch_managment/core/models/user_model.dart';
 
@@ -13,33 +14,36 @@ class AppProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  late UserModel _userData;
+  late UserModel currentUser;
+  late BusinessModel businessSelected;
 
   Future<void> checkAuth(BuildContext context,
-      {required String routePath,
+      {String? routePath,
       bool mounted = true,
       void Function()? verified,
-      bool initData = false}) async {
+      bool initData = true}) async {
     final User? user = _auth.currentUser;
 
     if (user != null) {
       if (initData) {
         await populateUserData(user);
       }
-      if (!mounted) return;
-      context.go('/$routePath');
+      // if (!mounted) return;
+      // context.go('/$routePath');
     } else {
       context.go('/login');
     }
   }
 
-  Future<void> populateUserData(User? user) async {
-    if (user != null) {
-      DocumentReference q =
-          _db.collection(AppConstants.collectionUsersFS).doc(user.uid);
+  Future<void> populateUserData(User user) async {
+    DocumentSnapshot doc = await _db
+        .collection(AppConstants.collectionUsersFS)
+        .doc(user.uid)
+        .get();
+    print(doc.data);
 
-      _userData = UserModel.fromJson(q as Map<String, dynamic>);
-    }
+    currentUser = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    print(currentUser);
   }
 
   Future<void> login({
@@ -50,7 +54,7 @@ class AppProvider {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) async {
-        await populateUserData(value.user);
+        await populateUserData(value.user!);
       });
     } catch (e) {
       print(e);
@@ -64,37 +68,31 @@ class AppProvider {
     Uint8List? webImage,
     String? fileName,
   }) async {
+    DateTime.now().millisecondsSinceEpoch;
     try {
-      String? urlImage;
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) async {
-        String id = value.user!.uid;
-        chaineModel.id = id;
-        print("user registed");
-        // id = value.user!.uid;
+      // String? urlImage;
 
-        DateTime.now().millisecondsSinceEpoch;
-
-        if (webImage != null) {
-          await FirebaseStorage.instance
-              .ref()
-              .child("files/${id + fileName!}")
-              .putData(webImage)
-              .then((p0) {
-            p0.ref.getDownloadURL().then((value) {
-              print("image saved");
-              chaineModel.urlPicture = urlImage;
-            });
+      // fileName!.split('.').last;
+      if (webImage != null) {
+        await FirebaseStorage.instance
+            .ref()
+            .child(
+                "${currentUser.uid}/business_moment/BUSINESS_ID/${DateTime.now().toIso8601String() + fileName!.split('.').last}")
+            .putData(webImage)
+            .then((p0) {
+          p0.ref.getDownloadURL().then((value) {
+            chaineModel.urlPicture = value;
+            print("image saved");
           });
-        }
-        await FirebaseFirestore.instance
-            .collection(AppConstants.collectionChaineFS)
-            .doc(id)
-            .set(chaineModel.toJson())
-            .then((value) {
-          print("save user");
         });
+      }
+
+      await _db
+          .collection(AppConstants.collectionBusinessFS)
+          .add(chaineModel.toJson())
+          .then((value) async {
+        await value.update({"idcompte": value.id});
+        print("save business");
       });
     } catch (e) {
       print(e);

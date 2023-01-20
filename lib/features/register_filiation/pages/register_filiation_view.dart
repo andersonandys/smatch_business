@@ -54,389 +54,408 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
 
     double height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Center(
-            child: SizedBox(
-              width: 700,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: height * 0.02),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Smatch Business",
-                          style: ralewayStyle.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.mainBlueColor,
-                            fontSize: 40.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: ResponsiveWidget.isSmallScreen(context)
-                          ? height * 0.032
-                          : height * 0.06,
-                      vertical: ResponsiveWidget.isSmallScreen(context)
-                          ? height * 0.032
-                          : height * 0.032,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ResponsiveWidget.isSmallScreen(context)
-                          ? height * 0.032
-                          : height * 0.07,
-                      vertical: ResponsiveWidget.isSmallScreen(context)
-                          ? height * 0.032
-                          : height * 0.12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(20.0),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 20.0,
-                          offset: Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.only(bottom: 40.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Je m'inscris sous filiation",
-                            textAlign: TextAlign.center,
-                            style: ralewayStyle.copyWith(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(height: height * 0.04),
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.grey[200],
-                                backgroundImage: webImage == null
-                                    ? null
-                                    : MemoryImage(webImage!),
-                                child: webImage == null
-                                    ? const Icon(
-                                        Icons.person,
-                                        size: 50,
-                                        color: Colors.grey,
-                                      )
-                                    : null,
-                              ),
-                              const SizedBox(width: 20),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                ),
-                                onPressed: () async {
-                                  FilePickerResult? result =
-                                      await FilePicker.platform.pickFiles();
+    return FutureBuilder(
+        future: appProvider.checkAuth(context),
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
 
-                                  if (result != null) {
-                                    Uint8List? file = result.files.first.bytes;
-                                    fileName = result.files.first.name;
-                                    setState(() {
-                                      webImage = file!;
-                                    });
-                                  }
-                                },
-                                child: const Text("Selectionnez une image"),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
+          return Scaffold(
+            body: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Center(
+                  child: SizedBox(
+                    width: 700,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: height * 0.02),
+                        RichText(
+                          text: TextSpan(
                             children: [
-                              SizedBox(
-                                width: 150,
-                                child: ComponentTextFormField(
-                                  onSaved: (newValue) {
-                                    lastName = newValue!;
-                                  },
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Champ ne peut pas être vide";
-                                    }
-                                    return null;
-                                  },
-                                  hintText: "Nom",
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: ComponentTextFormField(
-                                  onSaved: (newValue) {
-                                    firstName = newValue!;
-                                  },
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Champ ne peut pas être vide";
-                                    }
-                                    return null;
-                                  },
-                                  hintText: "Prénom",
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ComponentTextFormField(
-                                  onSaved: (newValue) {
-                                    canalName = newValue!;
-                                  },
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Champ ne peut pas être vide";
-                                    }
-                                    return null;
-                                  },
-                                  hintText: "Nom de ma chaîne",
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Monétiser ma chaîne",
-                                    textAlign: TextAlign.center,
-                                    style: ralewayStyle.copyWith(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  Switch(
-                                    value: free,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        free = value;
-                                      });
-                                    },
-                                    activeTrackColor: AppColors.mainBlueColor,
-                                    activeColor: AppColors.mainBlueColor,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Filale de :",
-                                textAlign: TextAlign.center,
+                              TextSpan(
+                                text: "Smatch Business",
                                 style: ralewayStyle.copyWith(
-                                  fontSize: 15.0,
-                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.mainBlueColor,
+                                  fontSize: 40.0,
                                 ),
                               ),
-                              const SizedBox(width: 20),
-                              SizedBox(
-                                width: 220,
-                                child: DropdownButtonFormField(
-                                  validator: (value) {
-                                    if (value == null) {
-                                      return "Champ ne peut pas être vide";
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: ResponsiveWidget.isSmallScreen(context)
+                                ? height * 0.032
+                                : height * 0.06,
+                            vertical: ResponsiveWidget.isSmallScreen(context)
+                                ? height * 0.032
+                                : height * 0.032,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: ResponsiveWidget.isSmallScreen(context)
+                                ? height * 0.032
+                                : height * 0.07,
+                            vertical: ResponsiveWidget.isSmallScreen(context)
+                                ? height * 0.032
+                                : height * 0.12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.whiteColor,
+                            borderRadius: BorderRadius.circular(20.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 20.0,
+                                offset: Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.only(bottom: 40.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Je m'inscris sous filiation",
+                                  textAlign: TextAlign.center,
+                                  style: ralewayStyle.copyWith(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
                                   ),
-                                  hint: const Text("Selectionnez une filiale"),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "Structure 1",
-                                      child: Text("Structure 1"),
+                                ),
+                                SizedBox(height: height * 0.04),
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 50,
+                                      backgroundColor: Colors.grey[200],
+                                      backgroundImage: webImage == null
+                                          ? null
+                                          : MemoryImage(webImage!),
+                                      child: webImage == null
+                                          ? const Icon(
+                                              Icons.person,
+                                              size: 50,
+                                              color: Colors.grey,
+                                            )
+                                          : null,
                                     ),
-                                    DropdownMenuItem(
-                                      value: "Structure 2",
-                                      child: Text("Structure 2"),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "Structure 3",
-                                      child: Text("Structure 3"),
+                                    const SizedBox(width: 20),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blue,
+                                      ),
+                                      onPressed: () async {
+                                        FilePickerResult? result =
+                                            await FilePicker.platform
+                                                .pickFiles();
+
+                                        if (result != null) {
+                                          Uint8List? file =
+                                              result.files.first.bytes;
+                                          fileName = result.files.first.name;
+                                          setState(() {
+                                            webImage = file!;
+                                          });
+                                        }
+                                      },
+                                      child:
+                                          const Text("Selectionnez une image"),
                                     ),
                                   ],
-                                  onSaved: (newValue) {
-                                    conpagnyName = newValue!;
-                                  },
-                                  onChanged: (value) {},
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 250,
-                                child: ComponentTextFormField(
-                                  onSaved: (newValue) {
-                                    email = newValue!;
-                                  },
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Champ ne peut pas être vide";
-                                    }
-                                    return null;
-                                  },
-                                  hintText: "Email",
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: ComponentTextFormField(
-                                  onSaved: (newValue) {
-                                    password = newValue!;
-                                  },
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return "Champ ne peut pas être vide";
-                                    }
-                                    return null;
-                                  },
-                                  obscureText: _obscureText,
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _obscureText = !_obscureText;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      _obscureText
-                                          ? Icons.visibility_off_outlined
-                                          : Icons.visibility_outlined,
-                                      color: Colors.black,
+                                const SizedBox(height: 20),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 150,
+                                      child: ComponentTextFormField(
+                                        onSaved: (newValue) {
+                                          lastName = newValue!;
+                                        },
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Champ ne peut pas être vide";
+                                          }
+                                          return null;
+                                        },
+                                        hintText: "Nom",
+                                      ),
                                     ),
-                                  ),
-                                  hintText: "Mot de passe",
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: height * 0.014),
-                          SizedBox(height: height * 0.05),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
-                                  setState(() {
-                                    loading = true;
-                                  });
-
-                                  await appProvider
-                                      .register(
-                                    email: email,
-                                    password: password,
-                                    chaineModel: ChaineModel(
-                                      firstName: firstName,
-                                      lastName: lastName,
-                                      email: email,
-                                      canalName: canalName,
-                                      free: free,
-                                      accountType: type,
-                                      urlPicture: urlImage,
-                                      compagnyFilialeName: conpagnyName,
+                                    const SizedBox(width: 20),
+                                    Expanded(
+                                      child: ComponentTextFormField(
+                                        onSaved: (newValue) {
+                                          firstName = newValue!;
+                                        },
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Champ ne peut pas être vide";
+                                          }
+                                          return null;
+                                        },
+                                        hintText: "Prénom",
+                                      ),
                                     ),
-                                  )
-                                      .then((value) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                    // context.replace("/");
-                                  });
-                                }
-                              },
-                              borderRadius: BorderRadius.circular(5.0),
-                              child: Ink(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 70.0, vertical: 18.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  color: AppColors.mainBlueColor,
+                                  ],
                                 ),
-                                child: Center(
-                                  child: loading
-                                      ? const CircularProgressIndicator(
-                                          color: AppColors.whiteColor,
-                                        )
-                                      : Text(
-                                          "S'inscrire",
+                                const SizedBox(height: 20),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ComponentTextFormField(
+                                        onSaved: (newValue) {
+                                          canalName = newValue!;
+                                        },
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Champ ne peut pas être vide";
+                                          }
+                                          return null;
+                                        },
+                                        hintText: "Nom de ma chaîne",
+                                      ),
+                                    ),
+                                    const SizedBox(width: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Monétiser ma chaîne",
+                                          textAlign: TextAlign.center,
                                           style: ralewayStyle.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.whiteColor,
-                                            fontSize: 16.0,
+                                            fontSize: 15.0,
+                                            color: Colors.black,
                                           ),
                                         ),
+                                        const SizedBox(width: 20),
+                                        Switch(
+                                          value: free,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              free = value;
+                                            });
+                                          },
+                                          activeTrackColor:
+                                              AppColors.mainBlueColor,
+                                          activeColor: AppColors.mainBlueColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: height * 0.03),
-                          const Divider(),
-                          SizedBox(height: height * 0.03),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                context.go('/login');
-                              },
-                              borderRadius: BorderRadius.circular(5.0),
-                              child: Ink(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 70.0, vertical: 18.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                  color: Colors.white,
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Filale de :",
+                                      textAlign: TextAlign.center,
+                                      style: ralewayStyle.copyWith(
+                                        fontSize: 15.0,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 20),
+                                    SizedBox(
+                                      width: 220,
+                                      child: DropdownButtonFormField(
+                                        validator: (value) {
+                                          if (value == null) {
+                                            return "Champ ne peut pas être vide";
+                                          }
+                                          return null;
+                                        },
+                                        decoration: const InputDecoration(
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        hint: const Text(
+                                            "Selectionnez une filiale"),
+                                        items: const [
+                                          DropdownMenuItem(
+                                            value: "Structure 1",
+                                            child: Text("Structure 1"),
+                                          ),
+                                          DropdownMenuItem(
+                                            value: "Structure 2",
+                                            child: Text("Structure 2"),
+                                          ),
+                                          DropdownMenuItem(
+                                            value: "Structure 3",
+                                            child: Text("Structure 3"),
+                                          ),
+                                        ],
+                                        onSaved: (newValue) {
+                                          conpagnyName = newValue!;
+                                        },
+                                        onChanged: (value) {},
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    "Se connecter",
-                                    style: ralewayStyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.green,
-                                      fontSize: 16.0,
+                                const SizedBox(height: 20),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 250,
+                                      child: ComponentTextFormField(
+                                        onSaved: (newValue) {
+                                          email = newValue!;
+                                        },
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Champ ne peut pas être vide";
+                                          }
+                                          return null;
+                                        },
+                                        hintText: "Email",
+                                      ),
+                                    ),
+                                    const SizedBox(width: 20),
+                                    Expanded(
+                                      child: ComponentTextFormField(
+                                        onSaved: (newValue) {
+                                          password = newValue!;
+                                        },
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Champ ne peut pas être vide";
+                                          }
+                                          return null;
+                                        },
+                                        obscureText: _obscureText,
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _obscureText = !_obscureText;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            _obscureText
+                                                ? Icons.visibility_off_outlined
+                                                : Icons.visibility_outlined,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        hintText: "Mot de passe",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: height * 0.014),
+                                SizedBox(height: height * 0.05),
+                                Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
+                                        setState(() {
+                                          loading = true;
+                                        });
+
+                                        await appProvider
+                                            .register(
+                                          email: email,
+                                          password: password,
+                                          chaineModel: ChaineModel(
+                                            firstName: firstName,
+                                            lastName: lastName,
+                                            email: email,
+                                            canalName: canalName,
+                                            free: free,
+                                            accountType: type,
+                                            urlPicture: urlImage,
+                                            compagnyFilialeName: conpagnyName,
+                                          ),
+                                        )
+                                            .then((value) {
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                          // context.replace("/");
+                                        });
+                                      }
+                                    },
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    child: Ink(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 70.0, vertical: 18.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        color: AppColors.mainBlueColor,
+                                      ),
+                                      child: Center(
+                                        child: loading
+                                            ? const CircularProgressIndicator(
+                                                color: AppColors.whiteColor,
+                                              )
+                                            : Text(
+                                                "S'inscrire",
+                                                style: ralewayStyle.copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: AppColors.whiteColor,
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                SizedBox(height: height * 0.03),
+                                // const Divider(),
+                                // SizedBox(height: height * 0.03),
+                                // Material(
+                                //   color: Colors.transparent,
+                                //   child: InkWell(
+                                //     onTap: () {
+                                //       context.go('/login');
+                                //     },
+                                //     borderRadius: BorderRadius.circular(5.0),
+                                //     child: Ink(
+                                //       padding: const EdgeInsets.symmetric(
+                                //           horizontal: 70.0, vertical: 18.0),
+                                //       decoration: BoxDecoration(
+                                //         borderRadius:
+                                //             BorderRadius.circular(5.0),
+                                //         color: Colors.white,
+                                //       ),
+                                //       child: Center(
+                                //         child: Text(
+                                //           "Se connecter",
+                                //           style: ralewayStyle.copyWith(
+                                //             fontWeight: FontWeight.w700,
+                                //             color: Colors.green,
+                                //             fontSize: 16.0,
+                                //           ),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        });
   }
 }

@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     if (kDebugMode) {
-      email = 'testdavid@gmail.com';
+      email = 'test@gmil.com';
       password = "123456";
     }
     super.initState();
@@ -164,12 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       print('email: $email');
                                       print('password: $password');
 
-                                      await appProvider.login(email: email, password: password)
+                                      await appProvider
+                                          .login(
+                                              email: email, password: password)
                                           .then((value) async {
-                                            // print(value.user!.uid);
-                                        // await appProvider
-                                        //     .populateUserData(value.user!);
-                                        // if (!mounted) return;
                                         context.go('/');
                                       });
                                     }
