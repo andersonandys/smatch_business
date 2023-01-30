@@ -1,46 +1,103 @@
 class BusinessModel {
-  final String idCreat;
-  final String name;
+  final String date;
   final String description;
-  final String playlist;
-  final String idCompte;
-  final String? idVideo;
-  final String logo;
-  final String vignette;
+  final String? descriptionVideo;
+  final String? idcategorie;
+  final String idcompte;
+  final String idcreat;
+  final String? idvideo;
+  final String? lienvideo;
+  final String? logo;
+  final bool? mode;
+  final int? notification;
+  final String? offre;
+  final String? playliste;
+  final String? prix;
+  final int range;
+  final int? ready;
+  final String? statut;
+  final String? titre;
+  final String? type;
+  final String? typePaiement;
+  final String? vignette;
+  final int? wallet;
 
   BusinessModel({
-    required this.idCreat,
-    required this.playlist,
-    required this.name,
+    required this.date,
     required this.description,
-    required this.idCompte,
-    required this.idVideo,
-    required this.logo,
-    required this.vignette,
+    this.descriptionVideo,
+    this.idcategorie,
+    required this.idcompte,
+    required this.idcreat,
+    this.idvideo,
+    this.lienvideo,
+    this.logo,
+    this.mode,
+    this.notification,
+    this.offre,
+    this.playliste,
+    this.prix,
+    required this.range,
+    this.ready,
+    this.statut,
+    this.titre,
+    this.type,
+    this.typePaiement,
+    this.vignette,
+    this.wallet,
   });
 
   factory BusinessModel.fromJson(Map<String, dynamic> json) {
     return BusinessModel(
-      idCreat: json['id'],
-      name: json['nom'],
-      playlist: json['playliste'],
+      date: json['date'],
       description: json['description'],
-      idCompte: json['idcompte'],
-      idVideo: json['type'],
+      descriptionVideo: json['descriptionvideo'],
+      idcategorie: json['idcategorie'],
+      idcompte: json['idcompte'],
+      idcreat: json['idcreat'],
+      idvideo: json['idvideo'],
+      lienvideo: json['lienvideo'],
       logo: json['logo'],
+      mode: json['mode'],
+      notification: json['notification'],
+      offre: json['offre'],
+      playliste: json['playliste'],
+      prix: json['prix'],
+      range: json['range'],
+      ready: json['ready'],
+      statut: json['statut'],
+      titre: json['titre'],
+      type: json['type'],
+      typePaiement: json['type_paiement'],
       vignette: json['vignette'],
+      wallet: json['wallet'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': idCreat,
-      'nom': name,
-      'playliste': playlist,
+      'date': date,
       'description': description,
-      'type': idVideo,
+      'descriptionvideo': descriptionVideo,
+      'idcategorie': idcategorie,
+      'idcompte': idcompte,
+      'idcreat': idcreat,
+      'idvideo': idvideo,
+      'lienvideo': lienvideo,
       'logo': logo,
+      'mode': mode,
+      'notification': notification,
+      'offre': offre,
+      'playliste': playliste,
+      'prix': prix,
+      'range': range,
+      'ready': ready,
+      'statut': statut,
+      'titre': titre,
+      'type': type,
+      'type_paiement': typePaiement,
       'vignette': vignette,
+      'wallet': wallet,
     };
   }
 }

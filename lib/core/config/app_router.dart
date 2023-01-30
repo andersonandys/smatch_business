@@ -18,7 +18,6 @@ import 'package:smatch_managment/features/user_profile/user_profile.dart';
 class AppRouter {
   static final GoRouter router = GoRouter(
     debugLogDiagnostics: true,
-
     initialLocation: "/",
     routes: <GoRoute>[
       GoRoute(
@@ -80,38 +79,44 @@ class AppRouter {
         ],
       ),
     ],
-    // redirect: (BuildContext context, GoRouterState state) {
-    //   final bool loggedIn = FirebaseAuth.instance.currentUser != null;
-    //   print(loggedIn);
-    //   final bool loggingIn = state.subloc == '/login';
-    //   final bool register = state.subloc == '/register';
-    //   final bool filiale = state.subloc == '/register/filiale';
-    //   final bool independent = state.subloc == '/register/independent';
+    redirect: (BuildContext context, GoRouterState state) {
+      final bool loggedIn = FirebaseAuth.instance.currentUser != null;
+      print(loggedIn);
+      // final bool loggingIn = state.subloc == '/login';
+      // final bool register = state.subloc == '/register';
+      // final bool filiale = state.subloc == '/register/filiale';
+      // final bool independent = state.subloc == '/register/independent';
 
-    //   // if (!loggedIn ) {
-    //   //   return loggingIn? null:'/login';
-    //   // }
-    //   // if (loggingIn) {
-    //   //    return "/";
-    //   // }
+      // if (!loggedIn ) {
+      //   return loggingIn? null:'/login';
+      // }
+      // if (loggingIn) {
+      //    return "/";
+      // }
 
-    //   if (!loggedIn) {
-    //     if (register || filiale || independent) {
-    //       return state.subloc;
-    //     }
-    //     return '/login';
-    //   }
-    //   if (loggedIn) {
-    //     if (loggingIn) {
-    //       return "/";
-    //     }
-    //     return state.subloc;
-    //   }
+      // if (!loggedIn) {
+      //   if (register || filiale || independent) {
+      //     return state.subloc;
+      //   }
+      //   return '/login';
+      // }
+      // if (loggedIn) {
+      //   if (loggingIn) {
+      //     return "/";
+      //   }
+      //   return state.subloc;
+      // }
 
-    //   return null;
-    // },
-    // refreshListenable:
-    //     GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
+      if (loggedIn) {
+        return state.subloc;
+      } else {
+        return '/login';
+      }
+
+      // return null;
+    },
+    refreshListenable:
+        GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
   );
 }
 

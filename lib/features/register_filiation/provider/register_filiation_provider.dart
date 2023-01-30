@@ -43,7 +43,7 @@ class RegisterFiliationProvider {
           });
         }
         await FirebaseFirestore.instance
-            .collection(AppConstants.collectionChaineFS)
+            .collection(AppConstants.collectionBusinessFS)
             .doc(id)
             .set(chaineModel.toJson())
             .then((value) {

@@ -7,6 +7,7 @@ import 'package:smatch_managment/core/models/chaine_model.dart';
 
 class RegisterIndependentProvider {
   ///All properties
+  Uint8List? webImage;
 
   ///Getters
 
@@ -41,7 +42,7 @@ class RegisterIndependentProvider {
           });
         }
         await FirebaseFirestore.instance
-            .collection(AppConstants.collectionChaineFS)
+            .collection(AppConstants.collectionBusinessFS)
             .doc(id)
             .set(chaineModel.toJson())
             .then((value) {

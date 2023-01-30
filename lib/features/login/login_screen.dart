@@ -26,8 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     if (kDebugMode) {
-      email = 'test@gmil.com';
-      password = "123456";
+      email = "voum@gmail.com";
+      password = "12345678";
     }
     super.initState();
   }
@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           .login(
                                               email: email, password: password)
                                           .then((value) async {
-                                        context.go('/');
+                                        context.replace("/");
                                       });
                                     }
                                   },

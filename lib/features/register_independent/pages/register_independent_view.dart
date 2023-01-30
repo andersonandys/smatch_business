@@ -168,6 +168,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                           setState(() {
                                             webImage = file!;
                                           });
+                                            webImage = file!;
                                         }
                                       },
                                       child:
@@ -318,7 +319,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                         });
 
                                         await appProvider
-                                            .register(
+                                            .registerBusiness(
                                           email: email,
                                           password: password,
                                           chaineModel: ChaineModel(

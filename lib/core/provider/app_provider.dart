@@ -55,13 +55,14 @@ class AppProvider {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) async {
         await populateUserData(value.user!);
+        print(value.user!.uid);
       });
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> register({
+  Future<void> registerBusiness({
     required String email,
     required String password,
     required ChaineModel chaineModel,

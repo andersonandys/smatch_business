@@ -366,7 +366,7 @@ class _RegisterFiliationViewState extends State<RegisterFiliationView> {
                                         });
 
                                         await appProvider
-                                            .register(
+                                            .registerBusiness(
                                           email: email,
                                           password: password,
                                           chaineModel: ChaineModel(
