@@ -46,7 +46,7 @@ class _BusinessViewState extends State<BusinessView> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text("Vous n'avais pas de compte businessn"),
+                            const Text("Vous n'avais pas de compte business"),
                             const Text("Cliquer ici pour en créer un"),
                             Material(
                               color: Colors.transparent,
@@ -64,7 +64,7 @@ class _BusinessViewState extends State<BusinessView> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "S'inscrire",
+                                      "Créer un compte",
                                       style: ralewayStyle.copyWith(
                                         fontWeight: FontWeight.w700,
                                         color: Colors.green,

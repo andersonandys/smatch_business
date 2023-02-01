@@ -8,7 +8,7 @@ class RegisterIndependentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return ChangeNotifierProvider(
       create: (_) => RegisterIndependentProvider(),
       lazy: false,
       child: const RegisterIndependentView(),

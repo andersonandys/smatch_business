@@ -5,9 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smatch_managment/app/features/dashboard/views/screens/dashboard_screen.dart';
+import 'package:smatch_managment/core/provider/app_provider.dart';
 import 'package:smatch_managment/features/business/pages/business_page.dart';
-import 'package:smatch_managment/features/home_business/home_business_page.dart';
-import 'package:smatch_managment/features/home_business/home_business_view.dart';
+import 'package:smatch_managment/features/home_business/pages/home_business_page.dart';
+import 'package:smatch_managment/features/home_business/pages/home_business_view.dart';
 import 'package:smatch_managment/features/login/login_screen.dart';
 import 'package:smatch_managment/features/register/register_page.dart';
 import 'package:smatch_managment/features/register_filiation/pages/register_filiation_page.dart';
@@ -24,7 +25,7 @@ class AppRouter {
         path: "/",
         name: "mybusiness",
         builder: (BuildContext context, GoRouterState state) {
-          return const BusinessPage();
+          return const HomeBusinessPage();
         },
         routes: <GoRoute>[
           GoRoute(
@@ -43,14 +44,14 @@ class AppRouter {
             },
             routes: const <GoRoute>[],
           ),
-          GoRoute(
-            path: "home",
-            name: "home",
-            builder: (BuildContext context, GoRouterState state) {
-              return const HomePage();
-            },
-            routes: const <GoRoute>[],
-          ),
+          // GoRoute(
+          //   path: "home",
+          //   name: "home",
+          //   builder: (BuildContext context, GoRouterState state) {
+          //     return const HomeBusinessPage();
+          //   },
+          //   routes: const <GoRoute>[],
+          // ),
           GoRoute(
             path: "register",
             name: "register",
@@ -79,10 +80,10 @@ class AppRouter {
         ],
       ),
     ],
-    redirect: (BuildContext context, GoRouterState state) {
+    redirect: (BuildContext context, GoRouterState state) async {
       final bool loggedIn = FirebaseAuth.instance.currentUser != null;
       print(loggedIn);
-      // final bool loggingIn = state.subloc == '/login';
+      final bool loggingIn = state.subloc == '/login';
       // final bool register = state.subloc == '/register';
       // final bool filiale = state.subloc == '/register/filiale';
       // final bool independent = state.subloc == '/register/independent';
@@ -108,6 +109,11 @@ class AppRouter {
       // }
 
       if (loggedIn) {
+        if (loggingIn) {
+          return "/";
+        }
+        await AppProvider()
+            .populateUserData(FirebaseAuth.instance.currentUser!);
         return state.subloc;
       } else {
         return '/login';

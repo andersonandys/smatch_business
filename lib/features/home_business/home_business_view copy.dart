@@ -12,7 +12,7 @@ import 'package:smatch_managment/core/utils/responsive_builder.dart';
 import 'package:smatch_managment/features/add_video.dart';
 import 'package:smatch_managment/features/all_videos/pages/all_videos_page.dart';
 import 'package:smatch_managment/features/dashboard_chaine/pages/dashboard_chaine_page.dart';
-import 'package:smatch_managment/features/home_business/home_business_provider.dart';
+import 'package:smatch_managment/features/home_business/provider/home_business_provider.dart';
 import 'package:smatch_managment/features/home_business/widgets/drawer_content.dart';
 import 'package:smatch_managment/features/uplaod_file/uplaod_file.dart';
 
@@ -34,20 +34,21 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final HomeProvider homeProvider = context.watch<HomeProvider>();
+    final HomeBuinessProvider homeProvider =
+        context.watch<HomeBuinessProvider>();
     final AppProvider appProvider = AppProvider();
 
     return FutureBuilder(
       future: appProvider.checkAuth(context),
       builder: (context, snap) {
-        if(snap.connectionState == ConnectionState.waiting) {
+        if (snap.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
         }
-        
+
         return Scaffold(
           key: homeProvider.scaffoldKey,
           backgroundColor: const Color.fromRGBO(31, 31, 31, 1),
@@ -56,11 +57,12 @@ class _HomeViewState extends State<HomeView> {
             children: [
               Flexible(
                 flex: (MediaQuery.of(context).size.width < 1360) ? 4 : 3,
-                child: DrawerContent(
+                child: DrawerWidget(
                   homeProvider: homeProvider,
                   pageController: _pageController,
                 ),
               ),
+              Text(appProvider.currentUser.email),
               Expanded(
                 flex: 9,
                 child: PageView(

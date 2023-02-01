@@ -1,34 +1,34 @@
 class VideoModel {
-  final int? comment;
+  final int comment;
   final String date;
   final String description;
-  final String idCategorie;
+  final String idCategorie; //id playlist
   final String idVideo;
   final String idVlog;
-  final int? like;
-  final int? partage;
-  final String playListe;
+  final int like;
+  final int partage;
+  final String playListe; //nom de la playlist
   final int range;
   final String titre;
   final String lienVideo;
   final String vignette;
-  final int? vue;
+  final int vue;
 
   VideoModel({
-     this.comment,
+    this.comment = 0,
     required this.date,
     required this.description,
     required this.idCategorie,
     required this.idVideo,
     required this.idVlog,
-     this.like,
-     this.partage,
+    this.like = 0,
+    this.partage = 0,
     required this.playListe,
     required this.range,
     required this.titre,
     required this.lienVideo,
     required this.vignette,
-     this.vue,
+    this.vue = 0,
   });
 
   factory VideoModel.fromJson(Map<String, dynamic> json) {

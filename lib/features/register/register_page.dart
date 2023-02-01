@@ -10,7 +10,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       create: (_) => RegisterProvider(),
-      child: RegisterView(),
+      child:const RegisterView(),
     );
   }
 }

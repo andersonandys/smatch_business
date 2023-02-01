@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:provider/provider.dart';
 import 'package:smatch_managment/core/config/app_contants.dart';
+import 'package:smatch_managment/core/models/business_model.dart';
 import 'package:smatch_managment/core/models/chaine_model.dart';
 import 'package:smatch_managment/core/provider/app_provider.dart';
 import 'package:smatch_managment/core/widgets/text_form_field_component.dart';
@@ -31,7 +32,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
   late String id;
   late String name;
   late String firstName;
-  late String lastName;
+  late String description;
   late String email;
   late String password;
   late String canalName;
@@ -50,7 +51,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
   @override
   Widget build(BuildContext context) {
     final RegisterIndependentProvider registerIndependentProvider =
-        context.read<RegisterIndependentProvider>();
+        context.watch<RegisterIndependentProvider>();
     final AppProvider appProvider = AppProvider();
 
     double height = MediaQuery.of(context).size.height;
@@ -168,7 +169,6 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                           setState(() {
                                             webImage = file!;
                                           });
-                                            webImage = file!;
                                         }
                                       },
                                       child:
@@ -183,7 +183,7 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                       width: 150,
                                       child: ComponentTextFormField(
                                         onSaved: (newValue) {
-                                          lastName = newValue!;
+                                          description = newValue!;
                                         },
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -318,18 +318,17 @@ class _RegisterIndependentViewState extends State<RegisterIndependentView> {
                                           loading = true;
                                         });
 
-                                        await appProvider
+                                        await registerIndependentProvider
                                             .registerBusiness(
-                                          email: email,
-                                          password: password,
-                                          chaineModel: ChaineModel(
-                                            firstName: firstName,
-                                            lastName: lastName,
-                                            email: email,
-                                            canalName: canalName,
-                                            free: free,
-                                            accountType: type,
-                                            urlPicture: urlImage,
+                                          currentUser: appProvider.currentUser,
+                                          image: webImage,
+                                          fileName: fileName,
+                                          businessModel: BusinessModel(
+                                            date: DateTime.now().toString(),
+                                            description: description,
+                                            idUser: appProvider.currentUser.uid,
+                                            range: DateTime.now()
+                                                .millisecondsSinceEpoch,
                                           ),
                                         )
                                             .then((value) {

@@ -1,37 +1,41 @@
+import 'package:smatch_managment/core/config/app_contants.dart';
+
 class BusinessModel {
-  final String date;
-  final String description;
-  final String? descriptionVideo;
-  final String? idcategorie;
-  final String idcompte;
-  final String idcreat;
-  final String? idvideo;
-  final String? lienvideo;
-  final String? logo;
-  final bool? mode;
-  final int? notification;
-  final String? offre;
-  final String? playliste;
-  final String? prix;
-  final int range;
-  final int? ready;
-  final String? statut;
-  final String? titre;
-  final String? type;
-  final String? typePaiement;
-  final String? vignette;
-  final int? wallet;
+   String? id;
+  //  String name;
+   String date;
+   String description;
+   String? descriptionVideo;
+   String? idcategorie;
+   String idUser;
+   String? idvideo;
+   String? lienvideo;
+   String? urlPicture;
+   bool? mode;
+   int? notification;
+   String? offre;
+   String? playliste;
+   String? prix;
+   int range;
+   int? ready;
+   String? statut;
+   String? titre;
+   String? type;
+   String? typePaiement;
+   String? vignette;
+   int? wallet;
 
   BusinessModel({
+     this.id, // id du business
+    // required this.name,
     required this.date,
     required this.description,
     this.descriptionVideo,
     this.idcategorie,
-    required this.idcompte,
-    required this.idcreat,
+    required this.idUser, // id de l'utilisateur
     this.idvideo,
     this.lienvideo,
-    this.logo,
+    this.urlPicture,
     this.mode,
     this.notification,
     this.offre,
@@ -41,7 +45,7 @@ class BusinessModel {
     this.ready,
     this.statut,
     this.titre,
-    this.type,
+    this.type = AppConstants.momentFieldFS,
     this.typePaiement,
     this.vignette,
     this.wallet,
@@ -49,15 +53,16 @@ class BusinessModel {
 
   factory BusinessModel.fromJson(Map<String, dynamic> json) {
     return BusinessModel(
+      id: json['idcompte'],
+      // name: json['nom'],
       date: json['date'],
       description: json['description'],
       descriptionVideo: json['descriptionvideo'],
       idcategorie: json['idcategorie'],
-      idcompte: json['idcompte'],
-      idcreat: json['idcreat'],
+      idUser: json['idcreat'],
       idvideo: json['idvideo'],
       lienvideo: json['lienvideo'],
-      logo: json['logo'],
+      urlPicture: json['logo'],
       mode: json['mode'],
       notification: json['notification'],
       offre: json['offre'],
@@ -80,11 +85,11 @@ class BusinessModel {
       'description': description,
       'descriptionvideo': descriptionVideo,
       'idcategorie': idcategorie,
-      'idcompte': idcompte,
-      'idcreat': idcreat,
+      'idcompte': id,
+      'idcreat': idUser,
       'idvideo': idvideo,
       'lienvideo': lienvideo,
-      'logo': logo,
+      'logo': urlPicture,
       'mode': mode,
       'notification': notification,
       'offre': offre,

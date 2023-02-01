@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smatch_managment/app/constans/app_constants.dart';
 
-class SelectionButtonData {
+class SelectionButtonDataWidget {
   final IconData activeIcon;
   final IconData icon;
   final String label;
   final int? totalNotif;
 
-  SelectionButtonData({
+  SelectionButtonDataWidget({
     required this.activeIcon,
     required this.icon,
     required this.label,
@@ -15,8 +15,8 @@ class SelectionButtonData {
   });
 }
 
-class SelectionButton extends StatefulWidget {
-  const SelectionButton({
+class SelectionButtonWidget extends StatefulWidget {
+  const SelectionButtonWidget({
     this.initialSelected = 0,
     required this.data,
     required this.onSelected,
@@ -24,14 +24,14 @@ class SelectionButton extends StatefulWidget {
   }) : super(key: key);
 
   final int initialSelected;
-  final List<SelectionButtonData> data;
-  final Function(int index, SelectionButtonData value) onSelected;
+  final List<SelectionButtonDataWidget> data;
+  final Function(int index, SelectionButtonDataWidget value) onSelected;
 
   @override
-  State<SelectionButton> createState() => _SelectionButtonState();
+  State<SelectionButtonWidget> createState() => _SelectionButtonWidgetState();
 }
 
-class _SelectionButtonState extends State<SelectionButton> {
+class _SelectionButtonWidgetState extends State<SelectionButtonWidget> {
   late int selected;
 
   @override
@@ -74,7 +74,7 @@ class _Button extends StatelessWidget {
   }) : super(key: key);
 
   final bool selected;
-  final SelectionButtonData data;
+  final SelectionButtonDataWidget data;
   final Function() onPressed;
 
   @override
